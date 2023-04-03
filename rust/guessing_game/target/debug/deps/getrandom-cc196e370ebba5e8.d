@@ -1,0 +1,11 @@
+C:\Users\LukasFasken\fuckery\fuckery\rust\guessing_game\target\debug\deps\getrandom-cc196e370ebba5e8.rmeta: C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\lib.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\util.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error_impls.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\windows.rs
+
+C:\Users\LukasFasken\fuckery\fuckery\rust\guessing_game\target\debug\deps\libgetrandom-cc196e370ebba5e8.rlib: C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\lib.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\util.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error_impls.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\windows.rs
+
+C:\Users\LukasFasken\fuckery\fuckery\rust\guessing_game\target\debug\deps\getrandom-cc196e370ebba5e8.d: C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\lib.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\util.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error_impls.rs C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\windows.rs
+
+C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\lib.rs:
+C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error.rs:
+C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\util.rs:
+C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\error_impls.rs:
+C:\Users\LukasFasken\.cargo\registry\src\github.com-1ecc6299db9ec823\getrandom-0.2.8\src\windows.rs:
