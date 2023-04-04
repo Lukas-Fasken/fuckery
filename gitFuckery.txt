@@ -1,0 +1,87 @@
+always in command promt / power shell
+
+git clone
+	git clone <link til repository>
+
+--------------
+C:\Users\LukasFasken>mkdir fuckery 							% new folder
+
+C:\Users\LukasFasken>cd fuckery/
+
+C:\Users\LukasFasken\fuckery>ls
+'ls' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\LukasFasken\fuckery>git clone https://github.com/Lukas-Fasken/fuckery.git
+Cloning into 'fuckery'...
+warning: You appear to have cloned an empty repository.	
+------------------
+
+adding files
+	git add <file name>
+
+viewing the staging
+	git status
+
+remove files 
+	rit rm <file name>
+
+committing
+ comment
+	git commit -m "comment"
+	
+pushing -> skubber til cloud
+	git push
+
+fetch - kan se hvad der ligger på repository
+	git fetch
+
+pulling
+	git pull
+
+branch (forgrening)	- laver en ny version af det samme
+	git branch			ser hvilket branch man har og hvad man er på med *
+	git checkout <name>		leave a branch
+	git branch <name>		enter a branch
+
+checkout		-leave a branch
+			- go to earlier commit
+				git log
+				git checkout <commit streng>
+					return: git branch
+
+pull request 		- merging one branch to another
+			- good idea to delete after merging
+			- conflicts -> chose what to keep
+
+history
+	git log
+
+
+switch 			- switch between branches
+	git switch <name>
+
+forking			- create a kopy as if it was your own
+			
+
+
+
+
+
+
+
+
+useful: git kraken -> lidt dyrt
+
+
+
+PS C:\Users\LukasFasken\fuckery> ssh-keygen.exe
+
+get key: PS C:\Users\LukasFasken> cd .\.ssh\
+PS C:\Users\LukasFasken\.ssh> cat id_rsa.pub | set-clipboard
+
+key:
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbm4odziOxL1w8/2QPVK830hH5l/7ATWo7J3XhWD0bN/YP+C2X8yyHfRm0M/6ho6xpog27IXEZUwkIh9o4tlUggdtaUIVJnXbAxjzE9vRY1D9xqJKD7bLGFcBbiEiMioleJqP5G2oj0pNI/Jac26a3wGVENYqpj8rCGMxOn16x5djpslIoRl0nNHf/ecUGajZUTPN1ftbJWbrldtuaBKEVBHN3v59yyrPcIZwi0Y18YuuKgC5AkovsjmpfH3X6HrAnpVIbYqZD3OL4hGQlh9a+z6INnW1HHLRuWmqow6QBavjIWO8lxhdq09TkuCkQ8fnQKxmMFhmN5FfTYtxNpEeruMYlUldnDZkvznwWh+AKj3Q2HiA3YrXqXB/aQl7RiwO0I6CjAK/e2s9faG6KvrYbfzLloZ/jnurV84ybBuRNgyVA61GnLkqnEzbaDUN8G7H5Je5kSn+LAdAs1fb8FoG1rYufs+c1PkA6f3OYqDvs1i3ICpyW0mbcVmSYFWdhHLM= lukas fasken@DESKTOP-O0U7J1L
+
+
+
