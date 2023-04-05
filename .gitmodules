@@ -1,0 +1,3 @@
+[submodule "rtic"]
+	path = stm32f446-rtic
+	url = git@github.com:Awlaursen/stm32f446-rtic.git
