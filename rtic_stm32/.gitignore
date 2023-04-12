@@ -1,0 +1,9 @@
+# Cargo build artifacts
+/target/
+/Cargo.lock
+
+# IntelliJ IDEA
+/.idea/
+
+# Visual Studio Code
+.vscode/.cortex-debug*.json
