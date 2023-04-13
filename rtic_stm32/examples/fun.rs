@@ -83,6 +83,15 @@ mod app {
         }
     }
 
+
+
+    #[task]
+    fn fancy(ctx: fancy::Context){
+        defmt::info!("this task has run");
+    }
+
+
+
     // The task functions are called by the scheduler
     #[task(priority=2, shared=[global], local = [led, ex_led])]
     fn blink(mut ctx: blink::Context) {                 //changing predefined values add mut to ctx
@@ -90,8 +99,12 @@ mod app {
         ctx.local.ex_led.toggle();
         ctx.shared.global.lock(|global| *global +=1);   //lock and increment global
         defmt::info!("Blink!");
+        fancy::spawn().ok();
         blink::spawn_after(1.secs()).ok();
     }
+
+
+
     #[task(priority=1, shared=[global], local=[a, b])]
     fn add(mut ctx: add::Context) {                 //changing predefined values add mut to ctx
     defmt::info!("task2");

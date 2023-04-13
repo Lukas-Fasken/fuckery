@@ -6,12 +6,12 @@
 
 use stm32f446_rtic as _; // global logger + panicking-behavior + memory layout
 
-#[rtic::app(device = stm32f4xx_hal::pac, dispatchers = [USART1])]
+#[rtic::app(device = stm32f4xx_hal::pac, dispatchers = [USART1, PA5, PA6, PA7])]
 mod app {
     use dwt_systick_monotonic::{DwtSystick, ExtU32};
     use stm32f4xx_hal::{
         gpio::{gpioa::PA5, Output, PushPull},
-        gpio::{Mode, Phase, Polarity},
+        spi::{Mode, Phase, Polarity},
         prelude::*,
     };
 
@@ -35,6 +35,8 @@ mod app {
     #[init]
     fn init(ctx: init::Context) -> (Shared, Local, init::Monotonics) {
         defmt::info!("init");
+
+        let spi: spi::(Polarity=IdleLow, Phase=CaptureOnFirstTransition)
 
         // Cortex-M peripherals
         let mut _core : cortex_m::Peripherals = ctx.core;
@@ -62,7 +64,7 @@ mod app {
             clocks.hclk().to_Hz(),
         );
         taskinit::spawn_after(1.secs()).ok(); // switch to int when write in terminal
-        (Shared {}, local {}, init::Monotonics(mono))
+        (Shared {}, Local {instruction:0}, init::Monotonics(mono))
     }
 
     // The idle function is called when there is nothing else to do
