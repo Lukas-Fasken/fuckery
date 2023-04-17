@@ -6,26 +6,28 @@ use stm32f446_rtic as _; // global logger + panicking-behavior + memory layout
 #[rtic::app(device = stm32f4xx_hal::pac, peripherals = true, dispatchers=[USART1, USART2, USART3])]
 mod app {
     use dwt_systick_monotonic::{DwtSystick, ExtU32};
-    use stm32f4xx_hal::{gpio::{NoPin, self, gpioa::{PA5, PA6, PA7}, Output, PushPull}, pac::{self},
+    use stm32f4xx_hal::{gpio::{NoPin, self, PA6}, pac::{self},
         prelude::*, 
-        spi::{Mode, NoMiso, Phase, Polarity, Spi}          
+        spi::{Mode, Phase, Polarity, Spi}
     };
 
     // Needed for scheduling monotonic tasks
     #[monotonic(binds = SysTick, default = true)]
     type MyMono = DwtSystick<48_000_000>; // 48 MHz
 
+    // Holds the shared resources (used by multiple tasks)
     // Needed even if we don't use it
     #[shared]
     struct Shared {
         
     }
 
+    // Holds the local resources (used by a single task)
     // Needed even if we don't use it
     #[local]
     struct Local {
-        spi: Spi<pac::SPI1, (gpio::gpioa::PA5<gpio::Alternate<5>>, NoPin, gpio::gpioa::PA7<gpio::Alternate<5>>)>,
-        cs: PA6<Output<PushPull>>,
+        spi: Spi<pac::SPI1, (gpio::gpioa::PA5<gpio::Alternate<5>>, gpio::NoPin, gpio::gpioa::PA7<gpio::Alternate<5>>)>,
+        cs: PA6<gpio::Output<gpio::PushPull>>,
     }
 
 
@@ -34,6 +36,8 @@ mod app {
     fn init(ctx: init::Context) -> (Shared, Local, init::Monotonics) {
         defmt::info!("init");
 
+        //let device = pac::Peripherals::take().unwrap();   // added for spi
+        //let rcc = device.RCC.constrain();                         // added for spi
         // Cortex-M peripherals
         let mut _core : cortex_m::Peripherals = ctx.core;
         
@@ -48,36 +52,41 @@ mod app {
         let gpioa = _device.GPIOA.split();
         let sclk =gpioa.pa5.into_alternate::<5>(); //stm32f446 datasheet s. 57 pdf
         let mosi =gpioa.pa7.into_alternate::<5>();
+        //let miso =gpioa.pa6.into_alternate::<5>();
+        let miso = stm32f4xx_hal::spi::NoMiso{};
         let mut cs = gpioa.pa6.into_push_pull_output();
-        cs.set_high();
+
+
+
+
 
         let spi_mode = stm32f4xx_hal::spi::Mode {
             polarity: stm32f4xx_hal::spi::Polarity::IdleLow,
             phase: stm32f4xx_hal::spi::Phase::CaptureOnFirstTransition
         };
 
-        let mut spi = _device.SPI1.spi(
-            (sclk, NoMiso{}, mosi),
+        let spi = _device.SPI1.spi(
+            (sclk, miso, mosi),
             spi_mode,
             1.MHz(),
             &clocks,
-            
         );
         
+
         // enable tracing and the cycle counter for the monotonic timer
         _core.DCB.enable_trace();
         _core.DWT.enable_cycle_counter();
 
-        // Set up the monotonic timer
+        // Set up the monotonic timer 
         let mono = DwtSystick::new(
             &mut _core.DCB,
             _core.DWT,
             _core.SYST,
             clocks.hclk().to_Hz(),
         );
-        mosi::spawn_after(1.secs()).ok();
+        mosi::spawn_after(100.millis()).ok();
+        //terminal::spawn_after(1.secs()).ok();
         (Shared {}, Local {spi, cs}, init::Monotonics(mono))
-        
     }
 
 
@@ -90,17 +99,25 @@ mod app {
         }
     }
     
+    // #[task()]
+    // fn terminal(ctx: terminal::Context){
+    //     let data: u8= 01010101;
+    //     mosi::spawn(data).unwrap();
+    // }
 
     // The task functions are called by the scheduler
     #[task(local=[spi, cs])]
     fn mosi(ctx: mosi::Context) {
-    
-        let mut data: &[u8] = "abcdef".as_bytes();
+        //let spi =ctx.resources.spi;
+
+        let data: &[u8] = "hej".as_bytes();
         ctx.local.cs.set_low();
         ctx.local.spi.write(&data).unwrap();
         ctx.local.cs.set_high();
-        
+        defmt::info!("value: {}", data);
         defmt::info!("Written");
-        mosi::spawn_after(5.secs()).ok();
+        //let res = ctx.local.spi.read().err();
+        defmt::info!("read");
+        mosi::spawn_after(100.millis()).unwrap();
     }
 }

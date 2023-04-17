@@ -29,7 +29,6 @@ mod app {
     struct Local {
         led: PA5<Output<PushPull>>,
         ex_led: PA1<Output<PushPull>>,
-        //button: PA4<Input<PushPull>>,
         a: u32,
         b: u32,
     }
@@ -106,10 +105,10 @@ mod app {
 
 
     #[task(priority=1, shared=[global], local=[a, b])]
-    fn add(mut ctx: add::Context) {                 //changing predefined values add mut to ctx
+    fn add(mut ctx: add::Context) {                           //changing predefined values add mut to ctx
     defmt::info!("task2");
     ctx.shared.global.lock(|global| *global +=1);   //lock and increment global
-    let mut d:u32=0;                                //needs to be equal to something, type is not needed
+    let mut d:u32=0;                                          //needs to be equal to something, type is not needed
     ctx.shared.global.lock(|global| d=*global);     //lock and assign d with global value
     *ctx.local.a+=1;
     *ctx.local.b+=1;
