@@ -6,9 +6,9 @@ use stm32f446_rtic as _; // global logger + panicking-behavior + memory layout
 #[rtic::app(device = stm32f4xx_hal::pac, peripherals = true, dispatchers=[USART1, USART2, USART3])]
 mod app {
     use dwt_systick_monotonic::{DwtSystick, ExtU32};
-    use stm32f4xx_hal::{gpio::{NoPin, self, gpioa::{PA5, PA6, PA7}, Output, PushPull}, pac::{self},
-        prelude::*, 
-        spi::{Mode, NoMiso, Phase, Polarity, Spi}          
+    use stm32f4xx_hal::{gpio::{NoPin, self, gpioa::{PA5, PA6, PA7}, Output, PushPull}, pac::{self}, //implements pins from hal with functions needed
+        prelude::*, //QOL implementation
+        spi::{Mode, NoMiso, Phase, Polarity, Spi} //implementing SPI from the HAL
     };
 
     // Needed for scheduling monotonic tasks
@@ -24,7 +24,7 @@ mod app {
     // Needed even if we don't use it
     #[local]
     struct Local {
-        spi: Spi<pac::SPI1, (gpio::gpioa::PA5<gpio::Alternate<5>>, NoPin, gpio::gpioa::PA7<gpio::Alternate<5>>)>,
+        spi: Spi<pac::SPI1, (gpio::gpioa::PA5<gpio::Alternate<5>>, NoPin, gpio::gpioa::PA7<gpio::Alternate<5>>)>, //setting spi as local to be used in tasks
         cs: PA6<Output<PushPull>>,
     }
 
@@ -51,18 +51,18 @@ mod app {
         let mut cs = gpioa.pa6.into_push_pull_output();
         cs.set_high();
 
-        let spi_mode = stm32f4xx_hal::spi::Mode {
+        let spi_mode = stm32f4xx_hal::spi::Mode { //spi setup
             polarity: stm32f4xx_hal::spi::Polarity::IdleLow,
             phase: stm32f4xx_hal::spi::Phase::CaptureOnFirstTransition
         };
 
         let mut spi = _device.SPI1.spi(
-            (sclk, NoMiso{}, mosi),
-            spi_mode,
-            1.MHz(),
-            &clocks,
+            (sclk, NoMiso{}, mosi), //implementations
+            spi_mode,   //ref to spi setup
+            1.MHz(),    //frequency of spi
+            &clocks,    //sync with system clock
             
-        );
+        ); //spi definition
         
         // enable tracing and the cycle counter for the monotonic timer
         _core.DCB.enable_trace();
@@ -75,8 +75,8 @@ mod app {
             _core.SYST,
             clocks.hclk().to_Hz(),
         );
-        mosi::spawn_after(1.secs()).ok();
-        (Shared {}, Local {spi, cs}, init::Monotonics(mono))
+        mosi::spawn_after(1.secs()).ok(); //task spawn
+        (Shared {}, Local {spi, cs}, init::Monotonics(mono)) //initiation of values
         
     }
 
@@ -95,12 +95,12 @@ mod app {
     #[task(local=[spi, cs])]
     fn mosi(ctx: mosi::Context) {
     
-        let mut data: &[u8] = "abcdef".as_bytes();
-        ctx.local.cs.set_low();
-        ctx.local.spi.write(&data).unwrap();
-        ctx.local.cs.set_high();
+        let mut data: &[u8] = "abcdef".as_bytes(); //create a list of bytes
+        ctx.local.cs.set_low(); //set cs pin low
+        ctx.local.spi.write(&data).unwrap(); //spi write list of bytes
+        ctx.local.cs.set_high(); //set cs pin high
         
         defmt::info!("Written");
-        mosi::spawn_after(5.secs()).ok();
+        mosi::spawn_after(5.secs()).ok(); //call task after 5 secs
     }
 }
